@@ -17,7 +17,7 @@ namespace SRecruitAPI.Controllers
            this.DBContext = dBContext;
         }
 
-        // GET: api/<jobskills>
+        // GET: api/<jobskills>///
         [HttpGet]
         public async Task<ActionResult<List<JobSkillDTO>>> Get()
         {
