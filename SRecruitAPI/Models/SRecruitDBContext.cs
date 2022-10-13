@@ -124,11 +124,10 @@ namespace SRecruitAPI.Models
 
             modelBuilder.Entity<JobSkill>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.JobSkillsId)
+                    .HasName("PK__JobSkill__62DFD08D29730CBF");
 
-                entity.Property(e => e.JobSkillsId)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("job_skills_id");
+                entity.Property(e => e.JobSkillsId).HasColumnName("job_skills_id");
 
                 entity.Property(e => e.JobSkillsTitle)
                     .HasMaxLength(255)
