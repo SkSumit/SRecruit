@@ -18,7 +18,7 @@ namespace SRecruitAPI.Controllers
            this.DBContext = dBContext;
         }
 
-        // GET: api/<jobskills>///
+        // GET: api/<jobskills>
         [HttpGet]
         public async Task<ActionResult<List<JobSkill>>> Get()
         {
@@ -42,11 +42,11 @@ namespace SRecruitAPI.Controllers
         }
 
         // GET api/<jobskills>/5
-        [HttpGet("{id}")]
+      /*  [HttpGet("{jobSkillsId}")]
         public string Get(int id)
         {
             return "value";
-        }
+        }*/
 
         // POST api/<jobskills>
         [HttpPost]
@@ -63,7 +63,7 @@ namespace SRecruitAPI.Controllers
         }
 
         // PUT api/<jobskills>/5
-        [HttpPut("{id}")]
+        [HttpPut("{jobSkillsId}")]
         public async Task<ActionResult<JobSkill>> Put(JobSkill jobSkill)
         {
             var entity = await DBContext.JobSkills.FirstOrDefaultAsync(s => s.JobSkillsId == jobSkill.JobSkillsId);
