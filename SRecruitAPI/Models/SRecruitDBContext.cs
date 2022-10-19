@@ -108,9 +108,9 @@ namespace SRecruitAPI.Models
 
             modelBuilder.Entity<JobRole>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("JobRole");
+
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.JobRoleId).HasColumnName("job_role_id");
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SRecruitAPI.Dto;
 using SRecruitAPI.Models;
 using System.Net;
 
@@ -25,13 +26,26 @@ namespace SRecruitAPI.Controllers
             var List = await DBContext.JobRoles.Select(
              s => new JobRole
              {
+                 Id = s.Id,
                  JobRoleId = s.JobRoleId,
                  JobRoleTitle = s.JobRoleTitle,
                  JobRoleSkill = s.JobRoleSkill
              }
          ).ToListAsync();
-
-
+           
+           var res  = DBContext.JobRoles.Join(
+                DBContext.JobSkills,
+                jobrole => jobrole.JobRoleSkill,
+                jobskill => jobskill.JobSkillsId,
+                (jobrole, jobskill) => new
+                {
+                    jobroleId = jobrole.JobRoleId,
+                    jobroleTitle = jobrole.JobRoleTitle,
+                    jobskillTitle = jobskill.JobSkillsTitle
+                }
+                ).ToListAsync();
+            Console.WriteLine(res);
+          
             if (List.Count < 0)
             {
                 return NotFound();
@@ -55,6 +69,7 @@ namespace SRecruitAPI.Controllers
         {
             var entity = new JobRole()
             {
+                JobRoleId = jobRole.JobRoleId,
                 JobRoleSkill = jobRole.JobRoleSkill,
                 JobRoleTitle= jobRole.JobRoleTitle,
 
@@ -70,7 +85,8 @@ namespace SRecruitAPI.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<JobRole>> Put(JobRole jobRole)
         {
-            var entity = await DBContext.JobRoles.FirstOrDefaultAsync(s => s.JobRoleId == jobRole.JobRoleId);
+            var entity = await DBContext.JobRoles.FirstOrDefaultAsync(s => s.Id == jobRole.Id);
+            entity.JobRoleId = jobRole.JobRoleId;
             entity.JobRoleSkill = jobRole.JobRoleSkill;
             entity.JobRoleTitle = jobRole.JobRoleTitle;
 
@@ -82,11 +98,11 @@ namespace SRecruitAPI.Controllers
 
         // DELETE api/<JobRoleController>/5
         [HttpDelete("{id}")]
-        public async Task<HttpStatusCode> Delete(int jobRoleId)
+        public async Task<HttpStatusCode> Delete(int id)
         {
             var entity = new JobRole()
             {
-                JobRoleId = jobRoleId,
+                Id = id,
             };
             DBContext.JobRoles.Attach(entity);
             DBContext.JobRoles.Remove(entity);
