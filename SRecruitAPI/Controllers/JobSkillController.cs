@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SRecruitAPI.Dto;
 using SRecruitAPI.Models;
+using System.Net;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,12 +18,12 @@ namespace SRecruitAPI.Controllers
             this.DBContext = dBContext;
         }
 
-        // GET: api/<jobskills>///
+        // GET: api/<jobskills>
         [HttpGet]
-        public async Task<ActionResult<List<JobSkillDTO>>> Get()
+        public async Task<ActionResult<List<JobSkill>>> Get()
         {
             var List = await DBContext.JobSkills.Select(
-             s => new JobSkillDTO
+             s => new JobSkill
              {
                  JobSkillsId = s.JobSkillsId,
                  JobSkillsTitle = s.JobSkillsTitle
@@ -41,28 +42,56 @@ namespace SRecruitAPI.Controllers
         }
 
         // GET api/<jobskills>/5
-        [HttpGet("{id}")]
+      /*  [HttpGet("{jobSkillsId}")]
         public string Get(int id)
         {
             return "value";
-        }
+        }*/
 
         // POST api/<jobskills>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult<JobSkill>> Post(JobSkill jobSkill)
         {
+            var entity = new JobSkill()
+            {
+                JobSkillsTitle = jobSkill.JobSkillsTitle
+            };
+            DBContext.JobSkills.Add(entity);
+            await DBContext.SaveChangesAsync();
+         
+            return entity;
         }
 
         // PUT api/<jobskills>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{jobSkillsId}")]
+        public async Task<ActionResult<JobSkill>> Put(JobSkill jobSkill)
         {
+            var entity = await DBContext.JobSkills.FirstOrDefaultAsync(s => s.JobSkillsId == jobSkill.JobSkillsId);
+
+
+            entity.JobSkillsId = jobSkill.JobSkillsId;
+            entity.JobSkillsTitle = jobSkill.JobSkillsTitle;
+
+            await DBContext.SaveChangesAsync();
+            return entity;
+
         }
 
         // DELETE api/<jobskills>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{jobSkillsId}")]
+        public async Task<HttpStatusCode> Delete(int jobSkillsId)
         {
+            var entity = new JobSkill()
+            {
+                JobSkillsId = jobSkillsId
+            };
+            DBContext.JobSkills.Attach(entity);
+            DBContext.JobSkills.Remove(entity);
+
+            await DBContext.SaveChangesAsync();
+            return HttpStatusCode.OK;
+
+
         }
     }
 }

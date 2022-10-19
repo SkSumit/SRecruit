@@ -10,6 +10,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors((options) => options.AddPolicy(name: "default", policy =>
+{
+    policy.WithOrigins("https://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
+}));
 
 //Connect to the MySQL Server.
 builder.Services.AddDbContext<SRecruitDBContext>
@@ -32,8 +36,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("CompanyOrigins");
-
+app.UseCors("default");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
