@@ -14,7 +14,7 @@ namespace SRecruitAPI.Controllers
         private readonly SRecruitDBContext DBContext;
         public JobSkillController(SRecruitDBContext dBContext)
         {
-           this.DBContext = dBContext;
+            this.DBContext = dBContext;
         }
 
         // GET: api/<jobskills>///
