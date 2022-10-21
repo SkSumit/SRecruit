@@ -2,8 +2,13 @@
 {
     public class JobRoleDTO
     {
-        public int? jobroleid { get; set; }
-        public string? jobroleTitle { get; set; }
-        public string? jobskillTitle    { get; set; }
+        
+
+        public int Id { get; set; }
+        public int JobRoleId { get; set; }
+        public string JobRoleTitle { get; set; }
+        public string JobSkillTitle { get; set; }
+
+
     }
 }

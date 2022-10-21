@@ -25,12 +25,14 @@ namespace SRecruitAPI.Models
         public virtual DbSet<ShortlistedCandidate> ShortlistedCandidate { get; set; } = null!;
         //public object ShortListedCandidate { get; internal set; }
 
+        public virtual DbSet<SpGetRolesWithSkillName> SpGetRolesWithSkillName { get; set; } = null!;
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=SLB-23GVBK3; Database=SRecruitDB; Integrated Security=SSPI;");
+                optionsBuilder.UseSqlServer("Server=SLB-53BYM13; Database=SRecruitDB; Integrated Security=SSPI;");
             }
         }
 
@@ -76,6 +78,8 @@ namespace SRecruitAPI.Models
 
             modelBuilder.Entity<Company>(entity =>
             {
+                entity.HasNoKey();
+
                 entity.ToTable("Company");
 
                 entity.Property(e => e.CompanyId).HasColumnName("Company_id");

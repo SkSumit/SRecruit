@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using SRecruitAPI.Dto;
 using SRecruitAPI.Models;
 using System.Net;
+using System.Linq;
+using System.Data;
+using System.Data.SqlClient;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,48 +23,22 @@ namespace SRecruitAPI.Controllers
 
         // GET: api/<JobRoleController>
         [HttpGet]
-        public async Task<ActionResult<List<JobRole>>> Get()
+        public IQueryable<SpGetRolesWithSkillName> Get()
         {
-            
-            var List = await DBContext.JobRoles.Select(
-             s => new JobRole
-             {
-                 Id = s.Id,
-                 JobRoleId = s.JobRoleId,
-                 JobRoleTitle = s.JobRoleTitle,
-                 JobRoleSkill = s.JobRoleSkill
-             }
-         ).ToListAsync();
-           
-           var res  = DBContext.JobRoles.Join(
-                DBContext.JobSkills,
-                jobrole => jobrole.JobRoleSkill,
-                jobskill => jobskill.JobSkillsId,
-                (jobrole, jobskill) => new
-                {
-                    jobroleId = jobrole.JobRoleId,
-                    jobroleTitle = jobrole.JobRoleTitle,
-                    jobskillTitle = jobskill.JobSkillsTitle
-                }
-                ).ToListAsync();
-            Console.WriteLine(res);
-          
-            if (List.Count < 0)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return List;
-            }
+
+
+            var res = DBContext.SpGetRolesWithSkillName.FromSqlInterpolated($"EXECUTE GetRolesWithSkillName");
+
+            return res;
+
         }
 
         // GET api/<JobRoleController>/5
-       /* [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }*/
+        /* [HttpGet("{id}")]
+         public string Get(int id)
+         {
+             return "value";
+         }*/
 
         // POST api/<JobRoleController>
         [HttpPost]
