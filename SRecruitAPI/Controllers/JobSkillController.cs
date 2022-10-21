@@ -22,6 +22,7 @@ namespace SRecruitAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<JobSkill>>> Get()
         {
+
             var List = await DBContext.JobSkills.Select(
              s => new JobSkill
              {
