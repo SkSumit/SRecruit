@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using SRecruitAPI.Dto;
 
 namespace SRecruitAPI.Models
 {
@@ -21,6 +22,8 @@ namespace SRecruitAPI.Models
         public virtual DbSet<JobPosting> JobPostings { get; set; } = null!;
         public virtual DbSet<JobRole> JobRoles { get; set; } = null!;
         public virtual DbSet<JobSkill> JobSkills { get; set; } = null!;
+        public virtual DbSet<ShortlistedCandidate> ShortlistedCandidate { get; set; } = null!;
+        //public object ShortListedCandidate { get; internal set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

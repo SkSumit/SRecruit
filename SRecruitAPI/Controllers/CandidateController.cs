@@ -62,10 +62,10 @@ namespace SRecruitAPI.Controllers
 
         //Update Candidate
         // PUT api/<CandidateController>/5
-        [HttpPut]
+        [HttpPut("{candidateId}")]
         public async Task<ActionResult<List<Candidate>>> UpdateCandidate(Candidate candidate)
         {
-            var dbCandidate = await _dbContext.Candidates.FindAsync(candidate.CandidateId);
+            var dbCandidate = await _dbContext.Candidates.FirstOrDefaultAsync(c=>c.CandidateId == candidate.CandidateId);
             if (dbCandidate == null)
                 return BadRequest("Candidate not found");
             dbCandidate.CandidateId = candidate.CandidateId;

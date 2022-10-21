@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using IdentityModel.Client;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SRecruitAPI.Dto;
 using SRecruitAPI.Models;
+using System.Data;
 using System.Data.Common;
+using System.Diagnostics.Metrics;
+using System.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -41,9 +46,11 @@ namespace SRecruitAPI.Controllers
         }
         // GET api/<CompanyController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<List<ShortlistedCandidate>>> Get(int id)
         {
-            return "value";
+            var r = _dbContext.ShortlistedCandidate.FromSqlInterpolated($"EXEC getCandidate {id}").ToList();
+       
+            return r;
         }
 
         // POST api/<CompanyController>
@@ -57,10 +64,10 @@ namespace SRecruitAPI.Controllers
         }
 
         // PUT api/<CompanyController>/5
-        [HttpPut]
+        [HttpPut("{companyId}")]
         public async Task<ActionResult<List<Company>>> UpdateCompany(Company company)
         {
-            var dbCompany = await _dbContext.Companies.FindAsync(company.CompanyId);
+            var dbCompany = await _dbContext.Companies.FirstOrDefaultAsync(c=>c.CompanyId == company.CompanyId);
             if (dbCompany == null)
                 return BadRequest("Company not found");
             dbCompany.CompanyId = company.CompanyId;
