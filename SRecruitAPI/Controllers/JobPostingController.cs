@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SRecruitAPI.Models;
+using System.Data;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SRecruitAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/jobposting")]
     [ApiController]
     public class JobPostingController : ControllerBase
     {
@@ -18,26 +19,10 @@ namespace SRecruitAPI.Controllers
 
         // GET: api/<JobPostingController>
         [HttpGet]
-        public async Task<ActionResult<List<JobPosting>>> Get()
+        public IQueryable<SpJobPosting> Get()
         {
-            var List = await _dbContext.JobPostings.Select(
-                s => new JobPosting
-                {
-                    JobPostingId = s.JobPostingId,
-                    JobRoleId = s.JobRoleId,
-                    JobPostingYoe = s.JobPostingYoe,
-                    CompanyId = s.CompanyId
-                }
-            ).ToListAsync();
-
-            if (List.Count < 0)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return Ok(List);
-            }
+            var res = _dbContext.SpJobPosting.FromSqlInterpolated($"EXECUTE getJobPostings");
+            return res;
         }
 
         // GET api/<JobPostingController>/5

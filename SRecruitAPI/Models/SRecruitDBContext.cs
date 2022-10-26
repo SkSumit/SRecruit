@@ -23,9 +23,8 @@ namespace SRecruitAPI.Models
         public virtual DbSet<JobRole> JobRoles { get; set; } = null!;
         public virtual DbSet<JobSkill> JobSkills { get; set; } = null!;
         public virtual DbSet<ShortlistedCandidate> ShortlistedCandidate { get; set; } = null!;
-        //public object ShortListedCandidate { get; internal set; }
-
         public virtual DbSet<SpGetRolesWithSkillName> SpGetRolesWithSkillName { get; set; } = null!;
+        public virtual DbSet<SpJobPosting> SpJobPosting { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
