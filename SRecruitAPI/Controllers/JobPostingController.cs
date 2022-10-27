@@ -27,9 +27,10 @@ namespace SRecruitAPI.Controllers
 
         // GET api/<JobPostingController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IQueryable<Candidate> Get(int id)
         {
-            return "value";
+            var res = _dbContext.Candidates.FromSqlInterpolated($"EXECUTE getCandidatesForAJob {id}");
+            return res;
         }
 
         // POST api/<JobPostingController>
