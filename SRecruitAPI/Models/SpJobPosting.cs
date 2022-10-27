@@ -5,6 +5,7 @@ namespace SRecruitAPI.Models
     public class SpJobPosting
     {
         [Key]
+        
         public Int64 id { get; set; }
         public int job_posting_id { get; set; }
         public string Company_name { get; set; }
